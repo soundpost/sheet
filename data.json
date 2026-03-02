@@ -1,31 +1,6 @@
 [
   {
-    "title": "Kindersinfonie(장난감 교향곡)",
-    "subtitle": "L. Mozart/J. Haydn",
-    "parts": []
-  },
-  {
-    "title": "Palladio",
-    "subtitle": "Karl Jenkins",
-    "parts": []
-  },
-  {
-    "title": "St. Paul's Suite",
-    "subtitle": "Gustav Holst",
-    "parts": []
-  },
-  {
-    "title": "또 다시(Spirited Away Reprise)",
-    "subtitle": "지브리/히사이시 조 (Hisaishi Joe)",
-    "parts": []
-  },
-  {
-    "title": "바람이 지나가는 길(Path of The Wind)",
-    "subtitle": "지브리/히사이시 조 (Hisaishi Joe)",
-    "parts": []
-  },
-  {
-    "title": "언제나 몇 번 이라도(Always With Me)",
+    "title": "언제나 몇 번 이라도 (Always With Me)",
     "subtitle": "지브리/기무라 유미 (Kimura Yumi)",
     "parts": [
       {
@@ -36,7 +11,17 @@
     ]
   },
   {
-    "title": "알라딘 메들리(Aladdin Medley)",
+    "title": "바람이 지나가는 길 (Path of The Wind)",
+    "subtitle": "지브리/히사이시 조 (Hisaishi Joe)",
+    "parts": []
+  },
+  {
+    "title": "또 다시 (Spirited Away Reprise)",
+    "subtitle": "지브리/히사이시 조 (Hisaishi Joe)",
+    "parts": []
+  },
+  {
+    "title": "알라딘 메들리 (Aladdin Medley)",
     "subtitle": "디즈니/알란 멘켄(Alan Menken)",
     "parts": [
       {
@@ -80,6 +65,21 @@
         "file": "https://drive.google.com/file/d/1EyfVG6dyT2IlLylchO4HDdpnZsvLewJW/view?usp=drive_link"
       }
     ]
+  },
+  {
+    "title": "St. Paul's Suite",
+    "subtitle": "Gustav Holst",
+    "parts": []
+  },
+  {
+    "title": "Palladio",
+    "subtitle": "Karl Jenkins",
+    "parts": []
+  },
+  {
+    "title": "Kindersinfonie (장난감 교향곡)",
+    "subtitle": "L. Mozart / J. Haydn",
+    "parts": []
   },
   {
     "title": "[Test] 또다시 센과치히로의 행방불명",
