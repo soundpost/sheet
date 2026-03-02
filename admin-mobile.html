@@ -3,65 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>사운드포스트 어드민 - 드래그 최적화</title>
+    <title>사운드포스트 어드민 - 고도화 버전</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <style>
-        :root {
-            --wood: #3d2b1f; --gold: #d4af37; --bg: #f2f2f7;
-            --card-bg: #ffffff; --danger: #ff3b30; --accent: #007aff;
-        }
-
-        body { font-family: -apple-system, sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 100px; color: #1c1c1e; overflow-x: hidden; }
+        :root { --wood: #3d2b1f; --gold: #d4af37; --bg: #f2f2f7; --card-bg: #fff; --danger: #ff3b30; --accent: #007aff; }
+        body { font-family: -apple-system, sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 120px; color: #1c1c1e; }
         header { background-color: var(--wood); color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--gold); }
         .container { padding: 12px; }
-
-        .config-card { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #ddd; display: flex; flex-direction: column; gap: 8px; }
+        .config-card { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; }
         input, button { border-radius: 8px; border: 1px solid #ddd; padding: 12px; font-size: 16px; width: 100%; box-sizing: border-box; }
-
-        /* 곡 카드 리스트 */
+        
         #song-editor { display: flex; flex-direction: column; gap: 12px; }
         .song-card { background: var(--card-bg); border-radius: 12px; border: 1px solid #e5e5ea; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        
         .song-header { display: flex; align-items: center; padding: 15px; cursor: pointer; }
-        .drag-handle { cursor: grab; padding-right: 15px; color: #ccc; font-size: 22px; user-select: none; }
-        .song-info-summary { flex-grow: 1; }
-        .song-info-summary h3 { margin: 0; font-size: 1.1rem; color: var(--wood); word-break: break-all; }
-        .song-info-summary p { margin: 4px 0 0; font-size: 0.8rem; color: #8e8e93; }
-
+        .drag-handle { cursor: grab; padding-right: 15px; color: #ccc; font-size: 24px; user-select: none; }
+        .song-info-summary { flex-grow: 1; pointer-events: none; }
+        .song-info-summary h3 { margin: 0; font-size: 1.1rem; color: var(--wood); }
         .song-body { display: none; padding: 15px; border-top: 1px solid #f0f0f0; background: #fafafa; }
         .song-card.expanded .song-body { display: block; }
 
-        /* 파트 리스트 (곡 안의 파트들) */
-        .part-list { min-height: 50px; background: #f0f0f5; border-radius: 8px; padding: 8px; margin: 10px 0; border: 1px dashed #ccc; }
-        .part-item { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-        .part-drag-handle { color: #ddd; font-size: 18px; cursor: grab; }
+        .part-list { min-height: 50px; background: #f0f0f5; border-radius: 8px; padding: 10px; margin: 10px 0; border: 1px dashed #ccc; }
+        .part-item { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .part-drag-handle { color: #ddd; font-size: 20px; cursor: grab; padding-right: 5px; }
         .part-inputs-wrap { flex-grow: 1; }
         .part-inputs-row { display: grid; grid-template-columns: 60px 1fr; gap: 5px; margin-bottom: 5px; }
-        .part-item input { padding: 6px; font-size: 14px; }
+        .part-item input { padding: 8px; font-size: 14px; background: #f9f9f9; }
 
-        /* 하단 바 */
         .footer-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 15px; border-top: 1px solid #ddd; display: flex; gap: 10px; z-index: 1000; }
         .btn-save { background: var(--gold); color: white; border: none; flex: 2; font-weight: bold; }
         .btn-load { background: var(--wood); color: white; border: none; flex: 1; }
-        .btn-add-song { background: #fff; color: var(--wood); border: 2px solid var(--wood); margin-top: 20px; font-weight: bold; }
-        
-        .label { font-size: 0.7rem; color: #8e8e93; font-weight: bold; margin-bottom: 4px; display: block; }
-        .sortable-ghost { opacity: 0.3; background: var(--accent) !important; }
+        .btn-add-song { background: #fff; color: var(--wood); border: 2px solid var(--wood); margin-top: 10px; font-weight: bold; }
+        .sortable-ghost { opacity: 0.2; background: var(--accent) !important; }
+        .feedback-options { display: flex; gap: 15px; margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px; font-size: 0.8rem; color: #666; }
     </style>
 </head>
 <body>
 
-<header><h3 style="margin:0; letter-spacing:1px;">SOUNDPOST ADMIN</h3></header>
+<header><h3 style="margin:0;">SOUNDPOST ADMIN V5</h3></header>
 
 <div class="container">
     <div class="config-card">
-        <span class="label">GITHUB AUTH</span>
-        <input type="password" id="ghToken" placeholder="GitHub Token">
+        <input type="password" id="ghToken" placeholder="GitHub Token" style="margin-bottom:8px;">
         <input type="text" id="ghRepo" value="soundpost/sheet" placeholder="아이디/저장소명">
+        <div class="feedback-options">
+            <label><input type="checkbox" id="useVib" checked> 진동</label>
+            <label><input type="checkbox" id="useSnd" checked> 소리</label>
+        </div>
     </div>
 
     <div id="song-editor">
-        <p style="text-align:center; color:#888; padding: 50px 0;">[불러오기]를 터치하세요.</p>
+        <p style="text-align:center; color:#888; padding: 50px 0;">[불러오기]를 눌러주세요.</p>
     </div>
 
     <button class="btn-add-song" onclick="addSong()">+ 새로운 연주곡 추가</button>
@@ -75,11 +66,25 @@
 <script>
     let currentData = [];
     let fileSha = "";
+    let expandedIndices = new Set(); // 어떤 곡이 열려 있는지 인덱스로 저장
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playFeedback() {
+        if (document.getElementById('useVib').checked && navigator.vibrate) navigator.vibrate(15);
+        if (document.getElementById('useSnd').checked) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+        }
+    }
 
     async function loadCurrentData() {
         const token = document.getElementById('ghToken').value;
         const repo = document.getElementById('ghRepo').value;
-        if(!token) return alert("토큰을 입력해주세요.");
+        if(!token) return alert("토큰을 입력하세요.");
 
         try {
             const response = await fetch(`https://api.github.com/repos/${repo}/contents/data.json`, {
@@ -89,7 +94,7 @@
             fileSha = data.sha;
             currentData = JSON.parse(decodeURIComponent(escape(atob(data.content))));
             renderAll();
-        } catch (e) { alert("데이터 로드 실패!"); }
+        } catch (e) { alert("로드 실패!"); }
     }
 
     function renderAll() {
@@ -98,112 +103,126 @@
         
         currentData.forEach((song, sIdx) => {
             const card = document.createElement('div');
-            card.className = 'song-card';
+            card.className = `song-card ${expandedIndices.has(sIdx) ? 'expanded' : ''}`;
             card.dataset.id = sIdx;
             card.innerHTML = `
-                <div class="song-header">
+                <div class="song-header" onclick="toggleExpand(${sIdx})">
                     <div class="drag-handle">⠿</div>
-                    <div class="song-info-summary" onclick="this.parentElement.parentElement.classList.toggle('expanded')">
+                    <div class="song-info-summary">
                         <h3>${song.title || '제목 없음'}</h3>
-                        <p>${song.subtitle || '작곡가 정보 없음'} (${song.parts.length}개 파트)</p>
+                        <p>${song.subtitle || '정보 없음'} (${song.parts.length} 파트)</p>
                     </div>
                 </div>
                 <div class="song-body">
-                    <span class="label">곡 정보 수정</span>
-                    <input type="text" value="${song.title}" onchange="updateSong(${sIdx}, 'title', this.value)" placeholder="곡 제목">
-                    <input type="text" value="${song.subtitle}" onchange="updateSong(${sIdx}, 'subtitle', this.value)" style="margin-top:8px;" placeholder="작곡가/부제">
+                    <span style="font-size:0.7rem; font-weight:bold; color:#888;">곡 상세 정보</span>
+                    <input type="text" value="${song.title}" onchange="currentData[${sIdx}].title=this.value; renderAll();" placeholder="곡 제목" style="margin-top:5px;">
+                    <input type="text" value="${song.subtitle}" onchange="currentData[${sIdx}].subtitle=this.value; renderAll();" style="margin-top:5px;" placeholder="작곡가/부제">
                     
-                    <span class="label" style="margin-top:20px;">파트 관리 (다른 곡으로 드래그 가능)</span>
                     <div class="part-list" data-song-idx="${sIdx}">
                         ${song.parts.map((p, pIdx) => `
-                            <div class="part-item" data-part-idx="${pIdx}">
+                            <div class="part-item">
                                 <div class="part-drag-handle">::</div>
                                 <div class="part-inputs-wrap">
                                     <div class="part-inputs-row">
-                                        <input type="text" value="${p.code}" onchange="updatePart(${sIdx}, ${pIdx}, 'code', this.value)" placeholder="코드">
-                                        <input type="text" value="${p.name}" onchange="updatePart(${sIdx}, ${pIdx}, 'name', this.value)" placeholder="파트명">
+                                        <input type="text" value="${p.code}" onchange="currentData[${sIdx}].parts[${pIdx}].code=this.value" placeholder="코드">
+                                        <input type="text" value="${p.name}" onchange="currentData[${sIdx}].parts[${pIdx}].name=this.value" placeholder="파트명">
                                     </div>
-                                    <input type="text" value="${p.file}" onchange="updatePart(${sIdx}, ${pIdx}, 'file', this.value)" placeholder="파일 경로">
+                                    <input type="text" value="${p.file}" onchange="currentData[${sIdx}].parts[${pIdx}].file=this.value" placeholder="파일 경로">
                                 </div>
                                 <button onclick="removePart(${sIdx}, ${pIdx})" style="width:auto; color:red; border:none; background:none;">✕</button>
                             </div>
                         `).join('')}
                     </div>
-                    <button onclick="addPart(${sIdx})" style="font-size:13px; padding:8px;">+ 파트 추가</button>
-                    <button onclick="removeSong(${sIdx})" style="background:#fff; color:red; margin-top:15px; padding:8px; border:1px solid red;">곡 삭제</button>
+                    <button onclick="addPart(${sIdx})" style="font-size:13px; padding:8px; background:#fff;">+ 파트 추가</button>
+                    <button onclick="removeSong(${sIdx})" style="background:#fff; color:red; margin-top:15px; padding:8px; border:1px solid red;">곡 전체 삭제</button>
                 </div>
             `;
             container.appendChild(card);
         });
-
         initSortables();
     }
 
+    function toggleExpand(sIdx) {
+        if (expandedIndices.has(sIdx)) expandedIndices.delete(sIdx);
+        else expandedIndices.add(sIdx);
+        renderAll();
+    }
+
     function initSortables() {
-        // 1. 곡 순서 변경 전용
+        // 1. 곡 순서 드래그
         Sortable.create(document.getElementById('song-editor'), {
-            handle: '.drag-handle',
-            animation: 150,
+            handle: '.drag-handle', animation: 200,
+            onStart: () => { if(audioCtx.state === 'suspended') audioCtx.resume(); playFeedback(); },
             onEnd: (evt) => {
                 const movedItem = currentData.splice(evt.oldIndex, 1)[0];
                 currentData.splice(evt.newIndex, 0, movedItem);
-                renderAll();
+                
+                // 열려있던 인덱스 상태 재계산
+                const nextExpanded = new Set();
+                expandedIndices.forEach(idx => {
+                    if (idx === evt.oldIndex) nextExpanded.add(evt.newIndex);
+                    else if (idx > evt.oldIndex && idx <= evt.newIndex) nextExpanded.add(idx - 1);
+                    else if (idx < evt.oldIndex && idx >= evt.newIndex) nextExpanded.add(idx + 1);
+                    else nextExpanded.add(idx);
+                });
+                expandedIndices = nextExpanded;
+                
+                playFeedback();
+                setTimeout(renderAll, 10); // DOM 업데이트를 위한 짧은 지연
             }
         });
 
-        // 2. 파트 순서 및 곡 간 이동 전용
+        // 2. 파트 순서 및 곡 간 이동
         document.querySelectorAll('.part-list').forEach(el => {
             Sortable.create(el, {
-                group: 'shared-parts', // 이 그룹명이 같아야 곡 간 이동 가능
-                handle: '.part-drag-handle',
-                animation: 150,
-                ghostClass: 'sortable-ghost',
+                group: 'parts', handle: '.part-drag-handle', animation: 200,
+                onStart: () => playFeedback(),
                 onEnd: (evt) => {
-                    const fromSongIdx = evt.from.dataset.songIdx;
-                    const toSongIdx = evt.to.dataset.songIdx;
-                    const oldPartIdx = evt.oldIndex;
-                    const newPartIdx = evt.newIndex;
+                    const fromIdx = parseInt(evt.from.dataset.songIdx);
+                    const toIdx = parseInt(evt.to.dataset.songIdx);
+                    const part = currentData[fromIdx].parts.splice(evt.oldIndex, 1)[0];
 
-                    const partData = currentData[fromSongIdx].parts.splice(oldPartIdx, 1)[0];
-                    
-                    if (fromSongIdx !== toSongIdx) {
-                        // 다른 곡으로 이동 시 가장 아래로 배치 (요청 사항)
-                        currentData[toSongIdx].parts.push(partData);
+                    if (fromIdx !== toIdx) {
+                        currentData[toIdx].parts.push(part); // 다른 곡으로 이동 시 맨 뒤로
+                        expandedIndices.delete(fromIdx); // 기존 곡 닫기
+                        expandedIndices.add(toIdx);    // 이동받은 곡 열기
                     } else {
-                        // 같은 곡 안에서 이동 시 떨어진 위치에 배치
-                        currentData[toSongIdx].parts.splice(newPartIdx, 0, partData);
+                        currentData[fromIdx].parts.splice(evt.newIndex, 0, part);
                     }
-                    renderAll();
+                    
+                    playFeedback();
+                    setTimeout(renderAll, 10);
                 }
             });
         });
     }
 
-    function updateSong(sIdx, key, val) { currentData[sIdx][key] = val; }
-    function updatePart(sIdx, pIdx, key, val) { currentData[sIdx].parts[pIdx][key] = val; }
-    function addSong() { currentData.unshift({title:"", subtitle:"", parts:[]}); renderAll(); }
-    function removeSong(sIdx) { if(confirm("곡을 삭제하시겠습니까?")) { currentData.splice(sIdx, 1); renderAll(); } }
+    function addSong() { 
+        currentData.unshift({title:"", subtitle:"", parts:[]}); 
+        expandedIndices.clear(); expandedIndices.add(0); 
+        renderAll(); 
+    }
+    function removeSong(sIdx) { if(confirm("삭제?")) { currentData.splice(sIdx, 1); expandedIndices.delete(sIdx); renderAll(); } }
     function addPart(sIdx) { currentData[sIdx].parts.push({code:"", name:"", file:""}); renderAll(); }
     function removePart(sIdx, pIdx) { currentData[sIdx].parts.splice(pIdx, 1); renderAll(); }
 
     async function saveToGithub() {
         const token = document.getElementById('ghToken').value;
         const repo = document.getElementById('ghRepo').value;
-        if(!fileSha) return alert("로드 먼저 해주세요.");
-
+        if(!fileSha) return alert("로드 먼저!");
         const content = btoa(unescape(encodeURIComponent(JSON.stringify(currentData, null, 2))));
         try {
             const res = await fetch(`https://api.github.com/repos/${repo}/contents/data.json`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "Admin Update: Reordering enabled", content: content, sha: fileSha })
+                body: JSON.stringify({ message: "Admin V5 Update", content: content, sha: fileSha })
             });
-            if(response.ok) {
+            if(res.ok) {
                 const json = await res.json();
                 fileSha = json.content.sha;
-                alert("✅ 저장 완료!");
-            }
-        } catch (e) { alert("저장 중 오류 발생"); }
+                alert("✅ 서버 저장 성공!");
+            } else { alert("저장 실패"); }
+        } catch (e) { alert("오류!"); }
     }
 </script>
 </body>
