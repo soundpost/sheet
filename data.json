@@ -73,11 +73,6 @@
         "code": "Score",
         "name": "총보",
         "file": "https://drive.google.com/file/d/1YGNo216cUYnh-1jGQvcLUS4IrQashz6O/view?usp=drive_link"
-      },
-      {
-        "code": "MuseScore",
-        "name": "MuseScore 원본",
-        "file": "https://drive.google.com/file/d/1XohdkWJXLB6wR8hYLKMu4QE0pKdANpWy/view?usp=drive_link"
       }
     ]
   },
@@ -156,11 +151,6 @@
         "code": "Vc",
         "name": "첼로",
         "file": "https://drive.google.com/file/d/1gZzI6KDvokSQWfdFLm7Leg6wAy25mgXR/view?usp=drivesdk"
-      },
-      {
-        "code": "ms",
-        "name": "뮤즈스코어 원본",
-        "file": "https://drive.google.com/file/d/1MNhEbBZhcbnvBP93eKaJQ6mH-d457EhD/view?usp=drivesdk"
       }
     ]
   }
